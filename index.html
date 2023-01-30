@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>What is the DRY principle?
+					<section>
+						<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+							<img style="height: 400px; width: 400px;" src="./assets/dry.png" alt="DRY">
+						</div>
+					</section>
+					<section>Every piece of knowledge must have a single, unambiguous, authoritative representation within a system</section>
+				</section>
+				<section>Duplication in knowledge
+					<section>
+						<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+							<img style="height: 400px; width: 400px;" src="./assets/know.png" alt="DRY">
+						</div>
+					</section>
+					<section style="padding: 0; height: 70%;">
+						<pre style="padding: 0; height: 110%;">
+							<code data-trim data-noescape>
+								// Mike.js
+								const MikeAccount = {
+									balance: 10,
+								};
+								
+								const depositToMikelAccount = (amount) => {
+									MikeAccount.balance += amount;
+								};
+								
+								// Ann.js
+								const AnnAccount = {
+									balance: 10,
+								};
+								
+								const depositToAnnAccount = (amount) => {
+									AnnAccount.balance += amount;
+								};
+							</code>
+						</pre>
+					</section>
+					<section style="padding: 0; height: 70%;">
+						<pre style="padding: 0; height: 110%;">
+							<code data-trim data-noescape>
+								// Bank.js
+								class BankAccount {
+									constructor(initialBalance) {
+									this.balance = initialBalance;
+									}
+									deposit(amount) {
+										this.balance += amount;
+									}
+								}
+								
+								// Mike.js
+								const MikeAccount = new BankAccount(0.10);
+								MikeAccount.deposit(1);
+								
+								// Ann.js
+								const AnnAccount = new BankAccount(1000);
+								AnnAccount.deposit(99);
+							</code>
+						</pre>
+					</section>
+				</section>
+				<section>Duplication in code
+					<section>
+						<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+							<img style="height: 400px; width: 400px;" src="./assets/code.png" alt="DRY">
+						</div>
+					</section>
+					<section style="padding: 0; height: 70%;">
+						<pre style="padding: 0; height: 110%;">
+							<code data-trim data-noescape>
+								function print_balance(account) {
+										console.log("Debits:" + "     " + account.debits);
+										console.log("Credits:" + "     " +  account.credits);
+									if (account.fees < О) {
+										console.log("Fees:" + "     " + "-" + -account.fees);
+									} else {
+										console.log("Fees:" + "     " + account.fees);
+									}
+									console.log("---");
+									if (account.balance < О) {
+										console.log("Balance:" + "     " + "-" -account.balance);
+									} else {
+										console.log("Balance:" + "     " + account.balance);
+									}
+								}
+							</code>
+						</pre>
+					</section>
+					<section style="padding: 0; height: 70%;">
+						<pre style="padding: 0; height: 110%;">
+							<code data-trim data-noescape>
+								function formatAmount(value) {
+									let result = "".padEnd(5, " "), value.abs;
+									result += (value < О) ? "-" : " " ;
+									return result;
+								}
+								
+								function printLine(label, amount) {
+									console.log(label + ":", formatAmount(amount));
+								}
+								
+								function printBalance(account) {
+									printLine("Debits", account.debits);
+									printLine("Credits", account.credits);
+									printLine("Fees", account.fees);
+									printLine("", "---");
+									printLine("Balance", account.balance)
+								}
+							</code>
+						</pre>
+					</section>
+					<section style="padding: 0; height: 70%;">
+						not all code duplication is knowledge duplication
+						<pre>
+							<code data-trim data-noescape>
+								function validate_age(value) {
+									return validate_type(value, "number") 
+									&& validate_min_integer(value, 0);
+								}
+
+								function validate_quantity(value) {
+									return validate_type(value, "number") 
+									&& validate_min_integer(value, 0);
+								}
+							</code>
+						</pre>
+					</section>
+					<section>
+						<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+							<img style="height: 400px; width: 400px;" src="./assets/validation.png" alt="DRY">
+						</div>
+					</section>
+				</section>
+				<section>Duplication in Documentation
+					<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+						<img style="height: 457px; width: 830px;" src="./assets/comment.png" alt="DRY">
+					</div>
+				</section>
+				<section>Interdeveloper Duplication
+					<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+						<img style="height: 320px; width: 1000px;" src="./assets/codemonkey.jpg" alt="DRY">
+					</div>
+				</section>
+				<section>DRY just a principle, not a rule</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
